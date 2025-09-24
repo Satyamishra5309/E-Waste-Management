@@ -1,0 +1,329 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Recycle, Eye, EyeOff, Upload } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+
+export default function Signup() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { signup } = useAuth();
+  
+  const [selectedCategory, setSelectedCategory] = useState<'user' | 'partner' | 'government'>('user');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [proofImage, setProofImage] = useState<File | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    companyName: '',
+    companyId: '',
+    departmentName: '',
+    govId: ''
+  });
+  const [errors, setErrors] = useState<string[]>([]);
+
+  // Check if coming from "Become a Partner" page
+  useEffect(() => {
+    if (location.state?.preselectedCategory === 'partner') {
+      setSelectedCategory('partner');
+    }
+  }, [location]);
+
+  const validateForm = () => {
+    const newErrors: string[] = [];
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.push('Passwords do not match');
+    }
+
+    if (formData.password.length < 6) {
+      newErrors.push('Password must be at least 6 characters');
+    }
+
+    if (selectedCategory === 'partner' && !proofImage) {
+      newErrors.push('Please upload proof image for partner registration');
+    }
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    const success = signup(formData, selectedCategory);
+    if (success) {
+      navigate(`/dashboard/${selectedCategory}`);
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProofImage(file);
+    }
+  };
+
+  const categories = [
+    { id: 'user', name: 'User', color: 'bg-emerald-100 text-emerald-800 border-emerald-300' },
+    { id: 'partner', name: 'Partner', color: 'bg-blue-100 text-blue-800 border-blue-300' },
+    { id: 'government', name: 'Government', color: 'bg-red-100 text-red-800 border-red-300' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div className="md:flex">
+          {/* Left Side - CycleBit Info */}
+          <div className="md:w-1/2 bg-gradient-to-br from-emerald-600 to-green-700 p-12 text-white">
+            <div className="flex items-center mb-8">
+              <Recycle className="h-12 w-12 mr-4 animate-pulse" />
+              <Link to="/" className="text-white-600 hover:text-emerald-100 font-medium">
+                   <h1 className="text-4xl font-bold">CycleBit</h1>
+                </Link>
+            </div>
+            <h2 className="text-3xl font-bold mb-6">Join the Revolution!</h2>
+            <p className="text-xl mb-8 text-emerald-100">
+              Be part of the solution to the global e-waste crisis.
+            </p>
+            <div className="space-y-4 text-emerald-100">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
+                <span>Turn old devices into cash</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
+                <span>Support environmental sustainability</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
+                <span>Join a trusted community</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side - Signup Form */}
+          <div className="md:w-1/2 p-12 max-h-screen overflow-y-auto">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8">Create Account</h2>
+
+            {/* Category Selection */}
+            <div className="grid grid-cols-3 gap-2 mb-8">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id as any)}
+                  className={`p-3 text-center border-2 rounded-lg font-medium transition-all ${
+                    selectedCategory === category.id
+                      ? category.color
+                      : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+
+            {errors.length > 0 && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                <ul className="list-disc list-inside">
+                  {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* User Fields */}
+              {selectedCategory === 'user' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Partner Fields */}
+              {selectedCategory === 'partner' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.companyName}
+                      onChange={(e) => setFormData({...formData, companyName: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="EcoTech Solutions"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Company ID</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.companyId}
+                      onChange={(e) => setFormData({...formData, companyId: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="ECO001"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="contact@ecotech.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Upload Proof Image</label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-emerald-400 transition-colors">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="proof-upload"
+                      />
+                      <label htmlFor="proof-upload" className="cursor-pointer">
+                        <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-600">
+                          {proofImage ? proofImage.name : 'Click to upload company registration document'}
+                        </p>
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Government Fields */}
+              {selectedCategory === 'government' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.departmentName}
+                      onChange={(e) => setFormData({...formData, departmentName: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="Environmental Protection Agency"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Government ID</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.govId}
+                      onChange={(e) => setFormData({...formData, govId: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="GOV001"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="dept@government.org"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Common Password Fields */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
+                    placeholder="Enter secure password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    required
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
+                    placeholder="Confirm your password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  >
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-emerald-700 transition-colors"
+              >
+                Create Account
+              </button>
+            </form>
+
+            <div className="mt-6 text-center">
+              <p className="text-gray-600">
+                Already have an account?{' '}
+                <Link to="/login" className="text-emerald-600 hover:text-emerald-700 font-medium">
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
