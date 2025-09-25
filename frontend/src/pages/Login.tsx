@@ -4,6 +4,7 @@ import { Recycle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
+  const { login } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<'user' | 'partner' | 'government'>('user');
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -13,18 +14,28 @@ export default function Login() {
     govId: ''
   });
   const [error, setError] = useState('');
-  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const success = login(formData, selectedCategory);
-    if (success) {
-      navigate(`/dashboard/${selectedCategory}`);
-    } else {
-      setError('Invalid credentials. Please try the demo credentials.');
+    try {
+      // Prepare payload according to category
+      const payload: any = { email: formData.email, password: formData.password };
+      if (selectedCategory === 'partner') payload.companyId = formData.companyId;
+      if (selectedCategory === 'government') payload.govId = formData.govId;
+
+      const success = await login(payload, selectedCategory);
+
+      if (success) {
+        // Navigate to dashboard based on category
+        navigate(`/dashboard/${selectedCategory}`);
+      } else {
+        setError('Invalid credentials. Please try again.');
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
 
@@ -38,32 +49,18 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden">
         <div className="md:flex">
-          {/* Left Side - CycleBit Info */}
+          {/* Left Side - Info */}
           <div className="md:w-1/2 bg-gradient-to-br from-emerald-600 to-green-700 p-12 text-white">
             <div className="flex items-center mb-8">
               <Recycle className="h-12 w-12 mr-4 animate-pulse" />
               <Link to="/" className="text-white-600 hover:text-emerald-100 font-medium">
-                 <h1 className="text-4xl font-bold">CycleBit</h1>
+                <h1 className="text-4xl font-bold">CycleBit</h1>
               </Link>
             </div>
             <h2 className="text-3xl font-bold mb-6">Welcome Back!</h2>
             <p className="text-xl mb-8 text-emerald-100">
               Continue your journey in transforming e-waste into opportunities.
             </p>
-            <div className="space-y-4 text-emerald-100">
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
-                <span>Secure and trusted platform</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
-                <span>Verified partners network</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
-                <span>Environmental impact tracking</span>
-              </div>
-            </div>
           </div>
 
           {/* Right Side - Login Form */}
@@ -94,7 +91,7 @@ export default function Login() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* User Fields */}
+              {/* Render fields based on category */}
               {selectedCategory === 'user' && (
                 <>
                   <div>
@@ -103,7 +100,7 @@ export default function Login() {
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
                       placeholder="user@demo.com"
                     />
@@ -115,7 +112,7 @@ export default function Login() {
                         type={showPassword ? 'text' : 'password'}
                         required
                         value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
                         placeholder="user123"
                       />
@@ -131,7 +128,6 @@ export default function Login() {
                 </>
               )}
 
-              {/* Partner Fields */}
               {selectedCategory === 'partner' && (
                 <>
                   <div>
@@ -140,7 +136,9 @@ export default function Login() {
                       type="text"
                       required
                       value={formData.companyId || formData.email}
-                      onChange={(e) => setFormData({...formData, companyId: e.target.value, email: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, companyId: e.target.value, email: e.target.value })
+                      }
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
                       placeholder="partner001 or partner@demo.com"
                     />
@@ -152,7 +150,7 @@ export default function Login() {
                         type={showPassword ? 'text' : 'password'}
                         required
                         value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
                         placeholder="partner123"
                       />
@@ -168,7 +166,6 @@ export default function Login() {
                 </>
               )}
 
-              {/* Government Fields */}
               {selectedCategory === 'government' && (
                 <>
                   <div>
@@ -177,7 +174,7 @@ export default function Login() {
                       type="text"
                       required
                       value={formData.govId}
-                      onChange={(e) => setFormData({...formData, govId: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, govId: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
                       placeholder="gov001"
                     />
@@ -189,7 +186,7 @@ export default function Login() {
                         type={showPassword ? 'text' : 'password'}
                         required
                         value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
                         placeholder="gov123"
                       />
@@ -209,7 +206,7 @@ export default function Login() {
                 type="submit"
                 className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-emerald-700 transition-colors"
               >
-                Sign In
+                Log In
               </button>
             </form>
 
@@ -220,16 +217,6 @@ export default function Login() {
                   Sign up
                 </Link>
               </p>
-            </div>
-
-            {/* Demo Credentials */}
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-medium text-gray-700 mb-2">Demo Credentials:</h4>
-              <div className="text-sm text-gray-600 space-y-1">
-                <p><strong>User:</strong> user@demo.com / user123</p>
-                <p><strong>Partner:</strong> partner001 or partner@demo.com / partner123</p>
-                <p><strong>Government:</strong> gov001 / gov123</p>
-              </div>
             </div>
           </div>
         </div>

@@ -377,7 +377,7 @@ function UploadFlow({
                     <label key={key} className="flex items-center space-x-2">
                       <input
                         type="checkbox"
-                        checked={value}
+                        checked={Boolean(value)}
                         onChange={(e) =>
                           setProductData({
                             ...productData,

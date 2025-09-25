@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Recycle, Eye, EyeOff, Upload } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 export default function Signup() {
   const location = useLocation();
@@ -15,7 +16,7 @@ export default function Signup() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     phone: '',
     address: '',
@@ -61,16 +62,27 @@ export default function Signup() {
     return newErrors.length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
-    const success = signup(formData, selectedCategory);
-    if (success) {
-      navigate(`/dashboard/${selectedCategory}`);
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/signup", {
+        ...formData,
+        category: selectedCategory,
+      });
+
+      if (response.data.success) {
+       navigate(`/dashboard/${selectedCategory}`); 
+      } else {
+        alert(response.data.message || "Signup failed");
+      }
+    } catch (error: any) {
+      console.error("Signup error:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Something went wrong");
     }
-  };
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'proof' | 'profile') => {
     const file = e.target.files?.[0];
@@ -144,8 +156,8 @@ export default function Signup() {
                     <input
                       type="text"
                       required
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                       className="w-full px-4 py-3 border rounded-lg"
                       placeholder="John Doe"
                     />
