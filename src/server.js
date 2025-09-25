@@ -3,16 +3,30 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./db/connection.js";
 
+import userRoutes from "./routes/userRoutes.js";
+import partnerRoutes from "./routes/partnerRoutes.js";
+import itemRoutes from "./routes/itemRoutes.js";
+import departmentRoutes from "./routes/departmentRoutes.js";
+import componentRoutes from "./routes/componentRoutes.js";
+
+
+
 
 dotenv.config({
     path:'./env'
 });
-
-
-
-
 const app = express();
 app.use(cors());
+
+app.use("/api/users", userRoutes);
+app.use("/api/partners", partnerRoutes);
+app.use("/api/items", itemRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/components", componentRoutes);
+
+
+
+
 app.use(express.json({ limit: "50mb"}));
 app.use(express.urlencoded({extended:true}));
 app.use((err, req, res, next) =>{
