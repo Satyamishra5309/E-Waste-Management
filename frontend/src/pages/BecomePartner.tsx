@@ -79,18 +79,18 @@ export default function BecomePartner() {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-green-900 to-emerald-800 text-white py-16">
+      <div className="bg-gradient-to-br from-green-200 to-emerald-300 text-black py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <div className="flex items-center mb-6">
-                <Users className="h-12 w-12 text-green-300 mr-4" />
-                <span className="text-green-200 text-lg font-medium">Partner Program</span>
+                <Users className="h-12 w-12 text-black mr-4" />
+                <span className="text-black text-lg font-medium">Partner Program</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                Join India's Leading <span className="text-green-300">E-Waste</span> Recycling Network
+                Join India's Leading <span className="text-black">E-Waste</span> Recycling Network
               </h1>
-              <p className="text-xl mb-8 text-green-100">
+              <p className="text-xl mb-8 text-black">
                 Transform your recycling business with access to a verified supply chain, 
                 guaranteed transactions, and comprehensive regulatory support.
               </p>
@@ -105,7 +105,7 @@ export default function BecomePartner() {
                 </Link>
                 <Link
                   to="/login"
-                  className="border-2 border-green-300 text-green-100 px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-colors inline-flex items-center justify-center"
+                  className="border-2 border-black text-black px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-colors inline-flex items-center justify-center"
                 >
                   Existing Partner Login
                 </Link>
@@ -113,7 +113,7 @@ export default function BecomePartner() {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/7432838/pexels-photo-7432838.jpeg"
+                src="../img/partner.png"
                 alt="E-waste recycling facility"
                 className="rounded-lg shadow-2xl"
               />

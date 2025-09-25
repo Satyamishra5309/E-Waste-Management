@@ -60,18 +60,18 @@ export default function GovernmentRole() {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-emerald-900 to-green-800 text-white py-16">
+      <div className="bg-gradient-to-br from-emerald-50 to-green-50 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <div className="flex items-center mb-6">
                 <Shield className="h-12 w-12 text-emerald-300 mr-4" />
-                <span className="text-emerald-200 text-lg font-medium">Government Partnership</span>
+                <span className="text-black text-lg font-medium">Government Partnership</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-black">
                 Regulatory Oversight for <span className="text-emerald-300">Sustainable</span> E-Waste Management
               </h1>
-              <p className="text-xl mb-8 text-emerald-100">
+              <p className="text-xl mb-8 text-black">
                 Government agencies play a crucial role in monitoring, regulating, and ensuring compliance 
                 in e-waste processing to protect our environment and public health.
               </p>
@@ -86,7 +86,7 @@ export default function GovernmentRole() {
                 </Link>
                 <Link
                   to="/login"
-                  className="border-2 border-emerald-300 text-emerald-100 px-8 py-4 rounded-lg font-semibold hover:bg-emerald-800 transition-colors inline-flex items-center justify-center"
+                  className="border-2 border-emerald-300 text-black px-8 py-4 rounded-lg font-semibold hover:bg-emerald-800 transition-colors inline-flex items-center justify-center"
                 >
                   Access Portal
                 </Link>
@@ -94,7 +94,7 @@ export default function GovernmentRole() {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/7432017/pexels-photo-7432017.jpeg"
+                src="../img/gov.jpeg"
                 alt="Government oversight"
                 className="rounded-lg shadow-2xl"
               />

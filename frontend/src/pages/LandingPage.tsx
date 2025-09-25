@@ -117,14 +117,14 @@ export default function LandingPage() {
       
       
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-emerald-50 to-green-100 min-h-screen flex items-center"
+      <div className="relative bg-gradient-to-br from-emerald-200 to-green-100 min-h-screen flex items-center"
            style={{
              backgroundImage: "url('/img/hero_bg.png')",
              backgroundSize: 'cover',
              backgroundPosition: 'center',
              backgroundBlendMode: 'overlay',
            }}>
-        <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-emerald-50 to-teal-50"></div>
         <div 
           className="absolute inset-0 opacity-10"
           style={{
