@@ -31,13 +31,13 @@ const Flowchart = () => {
     {
       icon: CreditCard,
       title: 'Get Paid',
-      description: 'Secure payment directly to your account',
+      description: 'Secure payment directly to into your bank account',
       color: 'from-teal-500 to-teal-600'
     },
     {
       icon: Recycle,
       title: 'Eco Impact',
-      description: 'Track your contribution to reducing e-waste',
+      description: 'Track your contribution to reducing e-waste for  better environment',
       color: 'from-green-500 to-emerald-600'
     }
   ];

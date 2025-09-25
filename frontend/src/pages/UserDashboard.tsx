@@ -10,7 +10,7 @@ import {
   XCircle,
   ArrowRight,
   CheckCircle,
-  DollarSign,
+  IndianRupee,
 } from "lucide-react";
 
 // ---------- Sidebar ----------
@@ -410,7 +410,7 @@ function UploadFlow({
           <div className="text-center space-y-6">
             <h2 className="text-2xl font-bold">Price Estimate</h2>
             <div className="bg-emerald-50 rounded-xl p-8">
-              <DollarSign className="h-16 w-16 text-emerald-600 mx-auto mb-4" />
+              <IndianRupee className="h-16 w-16 text-emerald-600 mx-auto mb-4" />
               <div className="text-5xl font-bold text-emerald-600 mb-2">
                 ₹{suggestedPrice}
               </div>

@@ -18,19 +18,21 @@ import {
 import Navbar from '../components/Navbar';
 import Flowchart from '../components/Flowchart';
 
-  const partners = [
-    { name: 'Amazon', logo: 'https://images.pexels.com/photos/4466751/pexels-photo-4466751.jpeg?auto=compress&cs=tinysrgb&w=200&h=100&dpr=1' },
-    { name: 'Samsung', logo: 'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=200&h=100&dpr=1' },
-    { name: 'Apple', logo: 'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=200&h=100&dpr=1' },
-    { name: 'Microsoft', logo: 'https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg?auto=compress&cs=tinysrgb&w=200&h=100&dpr=1' },
-    { name: 'Dell', logo: 'https://images.pexels.com/photos/205316/pexels-photo-205316.jpeg?auto=compress&cs=tinysrgb&w=200&h=100&dpr=1' },
-    { name: 'HP', logo: 'https://images.pexels.com/photos/374074/pexels-photo-374074.jpeg?auto=compress&cs=tinysrgb&w=200&h=100&dpr=1' }
-  ];
+const partners = [
+  { name: 'Apple', logo: '/img/apple.jpeg' },
+  { name: 'Asus', logo: '/img/asus.png' },
+  { name: 'Dell', logo: '/img/dell.png' },
+  { name: 'Google', logo: '/img/google.png' },
+  { name: 'Samsung', logo: '/img/samsung.png' },
+  { name: 'HP', logo: '/img/hp.png' },
+  { name: 'TATA', logo: '/img/tata.png' }
+];
+
 
 const heroImages = [
   'https://images.pexels.com/photos/1108572/pexels-photo-1108572.jpeg',
-  'https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg',
-  'https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg'
+  'img/herocarousel1.png',
+  'img/herocarousel2.png'
 ];
 
 const partnerLogos = [
@@ -117,7 +119,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-emerald-50 to-green-100 min-h-screen flex items-center"
            style={{
-             backgroundImage: `url('https://images.pexels.com/photos/7048060/pexels-photo-7048060.jpeg')`,
+             backgroundImage: "url('/img/hero_bg.png')",
              backgroundSize: 'cover',
              backgroundPosition: 'center',
              backgroundBlendMode: 'overlay',
@@ -126,7 +128,7 @@ export default function LandingPage() {
         <div 
           className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage: `url('https://images.pexels.com/photos/2559941/pexels-photo-2559941.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1')`,
+            backgroundImage: "url('/img/hero_bg.png')",
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
@@ -261,7 +263,7 @@ export default function LandingPage() {
               {
                 icon: Users,
                 title: 'Partner',
-                description: 'Join our network of buyers and access bulk quantities of quality refurbished electronics.',
+                description: 'Join our network of buyers and access bulk quantities of quality refurbished electronics and other e-waste.',
                 features: ['Bulk Purchasing', 'Priority Access', 'Custom Solutions'],
                 cta: 'Become Partner',
                 link: '/signup',
@@ -363,41 +365,51 @@ export default function LandingPage() {
       <Flowchart />
 
       {/* Partners Carousel */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Trusted by Industry Leaders
-            </h2>
-            <p className="text-xl text-gray-600">
-              Join thousands of businesses who trust CycleBit for their e-waste management needs.
-            </p>
-          </motion.div>
+      <section className="py-16 bg-white overflow-hidden">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="text-center mb-12"
+    >
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Trusted by Industry Leaders
+      </h2>
+      <p className="text-xl text-gray-600">
+        Join thousands of businesses who trust CycleBit for their e-waste management needs.
+      </p>
+    </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center opacity-70">
-            {partners.map((partner, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex items-center justify-center"
-              >
-                <img 
-                  src={partner.logo} 
-                  alt={partner.name}
-                  className="h-12 object-contain grayscale hover:grayscale-0 transition-all"
-                />
-              </motion.div>
-            ))}
+    {/* Carousel container */}
+    <div className="relative w-full overflow-hidden">
+      <motion.div
+        className="flex space-x-12"
+        animate={{ x: ["0%", "-100%"] }}
+        transition={{
+          repeat: Infinity,
+          duration: 20,
+          ease: "linear",
+        }}
+      >
+        {/* Duplicate logos twice for smooth infinite scrolling */}
+        {[...partners, ...partners].map((partner, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-center min-w-[150px]"
+          >
+            <img
+              src={partner.logo}
+              alt={partner.name}
+              className="h-12 object-contain grayscale hover:grayscale-0 transition-all"
+            />
           </div>
-        </div>
-      </section>
+        ))}
+      </motion.div>
+    </div>
+  </div>
+</section>
+
 
        {/* Testimonials */}
       <section className="py-16 bg-gray-50">
