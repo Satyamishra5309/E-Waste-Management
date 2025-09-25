@@ -49,7 +49,8 @@ const demoProducts = [
     partner: 'EcoTech Solutions',
     status: 'processed',
     carbonSaved: '2.5 kg',
-    date: '2024-01-15'
+    date: '2024-01-15',
+    location: 'Lucknow, India'
   },
   { 
     id: 2, 
@@ -61,7 +62,8 @@ const demoProducts = [
     partner: 'Green Recyclers Ltd',
     status: 'processing',
     carbonSaved: '2.1 kg',
-    date: '2024-01-14'
+    date: '2024-01-14',
+    location: 'Delhi, India'
   },
   { 
     id: 3, 
@@ -73,9 +75,11 @@ const demoProducts = [
     partner: 'EcoTech Solutions',
     status: 'completed',
     carbonSaved: '8.3 kg',
-    date: '2024-01-13'
+    date: '2024-01-13',
+    location: 'Mumbai, India'
   }
 ];
+
 
 const demoStats = {
   totalCompanies: 45,
@@ -244,7 +248,8 @@ export default function GovernmentDashboard() {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partner</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Carbon Saved</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                       </tr>
                     </thead>
@@ -270,6 +275,7 @@ export default function GovernmentDashboard() {
                               {product.status}
                             </span>
                           </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.location}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.date}</td>
                         </tr>
                       ))}

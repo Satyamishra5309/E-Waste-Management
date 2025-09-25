@@ -357,8 +357,7 @@ function UploadFlow({
                   How many years used?
                 </label>
                 <input
-                  type="number"
-                  min="0"
+                  type="text"
                   max="20"
                   value={productData.yearsUsed}
                   onChange={(e) =>

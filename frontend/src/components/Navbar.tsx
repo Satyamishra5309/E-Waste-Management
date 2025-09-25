@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Recycle } from 'lucide-react';
+import { Menu, X, Recycle, Bot } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Navbar() {
@@ -56,6 +56,14 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
+                {/* Chatbot Button */}
+                <Link
+                  to="/chatbot"
+                  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  <Bot className="h-4 w-4 mr-1" />
+                  Talk to Chatbot
+                </Link>
               </div>
             ) : (
               <div className="flex items-center space-x-4">
@@ -64,6 +72,14 @@ export default function Navbar() {
                 </Link>
                 <Link to="/signup" className="bg-emerald-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
                   Sign Up
+                </Link>
+                {/* Chatbot Button */}
+                <Link
+                  to="/chatbot"
+                  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  <Bot className="h-4 w-4 mr-1" />
+                  Talk to Chatbot
                 </Link>
               </div>
             )}
@@ -105,12 +121,20 @@ export default function Navbar() {
               Become a Partner
             </Link>
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium"
-              >
-                Logout
-              </button>
+              <>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium"
+                >
+                  Logout
+                </button>
+                <Link
+                  to="/chatbot"
+                  className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium"
+                >
+                  Talk to Chatbot
+                </Link>
+              </>
             ) : (
               <>
                 <Link to="/login" className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium">
@@ -118,6 +142,12 @@ export default function Navbar() {
                 </Link>
                 <Link to="/signup" className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium">
                   Sign Up
+                </Link>
+                <Link
+                  to="/chatbot"
+                  className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium"
+                >
+                  Talk to Chatbot
                 </Link>
               </>
             )}
