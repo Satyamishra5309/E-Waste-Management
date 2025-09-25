@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { Shield, BarChart3, FileText, Users, TrendingUp, Globe, ArrowRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
+import {
+  BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+
+
 const impactStats = [
   { label: 'E-Waste Monitored', value: '2.5M tonnes', icon: BarChart3, color: 'text-emerald-600' },
   { label: 'Companies Regulated', value: '450+', icon: Users, color: 'text-blue-600' },
@@ -185,6 +190,92 @@ export default function GovernmentRole() {
           </div>
         </div>
       </div>
+
+            {/* Analytics Section */}
+<div className="py-16 bg-gray-100">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold text-gray-800 mb-4">E-Waste Analytics Dashboard</h2>
+      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        Visualize key statistics and trends for better insights and decision-making
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-8">
+      {/* Bar Chart */}
+      <div className="bg-white rounded-xl p-6 shadow-md">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">E-Waste Collection by Region</h3>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart
+            data={[
+              { region: 'North', collected: 400 },
+              { region: 'South', collected: 300 },
+              { region: 'East', collected: 200 },
+              { region: 'West', collected: 350 },
+            ]}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="region" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="collected" fill="#10B981" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Line Chart */}
+      <div className="bg-white rounded-xl p-6 shadow-md">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">Monthly E-Waste Trends</h3>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart
+            data={[
+              { month: 'Jan', eWaste: 50 },
+              { month: 'Feb', eWaste: 70 },
+              { month: 'Mar', eWaste: 65 },
+              { month: 'Apr', eWaste: 90 },
+              { month: 'May', eWaste: 75 },
+            ]}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="eWaste" stroke="#3B82F6" strokeWidth={3} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Pie Chart */}
+      <div className="bg-white rounded-xl p-6 shadow-md">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">E-Waste Processing Methods</h3>
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart>
+            <Pie
+              data={[
+                { name: 'Recycled', value: 60 },
+                { name: 'Disposed', value: 25 },
+                { name: 'Resold', value: 15 },
+              ]}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              fill="#6366F1"
+              label
+            />
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
       {/* Why Government Partnership Matters */}
       <div className="py-16 bg-emerald-900 text-white">

@@ -13,6 +13,10 @@ export default function Navbar() {
     navigate('/');
   };
 
+  const openChatbot = () => {
+    window.open("http://localhost:3000", "_blank"); // <-- this should be the URL where chatbot frontend runs
+  };
+
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,14 +60,19 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
-                {/* Chatbot Button */}
-                <Link
-                  to="/chatbot"
-                  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
-                >
-                  <Bot className="h-4 w-4 mr-1" />
-                  Talk to Chatbot
-                </Link>
+{/* Chatbot Button */}
+<a
+  href="http://localhost:3000"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+>
+  <Bot className="h-4 w-4 mr-1" />
+  Chatbot
+</a>
+
+
+
               </div>
             ) : (
               <div className="flex items-center space-x-4">
@@ -74,13 +83,20 @@ export default function Navbar() {
                   Sign Up
                 </Link>
                 {/* Chatbot Button */}
-                <Link
-                  to="/chatbot"
-                  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
-                >
-                  <Bot className="h-4 w-4 mr-1" />
-                  Talk to Chatbot
-                </Link>
+                
+{/* Chatbot Button */}
+<a
+  href="http://localhost:3000"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+>
+  <Bot className="h-4 w-4 mr-1" />
+  Chatbot
+</a>
+
+
+
               </div>
             )}
           </div>
@@ -128,12 +144,19 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
-                <Link
-                  to="/chatbot"
-                  className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium"
-                >
-                  Talk to Chatbot
-                </Link>
+  {/* Chatbot Button */}
+<a
+  href="http://localhost:3000"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+>
+  <Bot className="h-4 w-4 mr-1" />
+  Chatbot
+</a>
+
+
+
               </>
             ) : (
               <>
@@ -143,12 +166,20 @@ export default function Navbar() {
                 <Link to="/signup" className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium">
                   Sign Up
                 </Link>
-                <Link
-                  to="/chatbot"
-                  className="block text-gray-700 hover:text-emerald-600 px-3 py-2 text-sm font-medium"
-                >
-                  Talk to Chatbot
-                </Link>
+ {/* Chatbot Button */}
+                <a
+  href="http://localhost:3000"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+>
+  <Bot className="h-4 w-4 mr-1" />
+  Chatbot
+</a>
+
+
+
+
               </>
             )}
           </div>
