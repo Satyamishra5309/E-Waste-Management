@@ -49,7 +49,7 @@ export default function Navbar() {
 
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-700 text-sm">Hello, {user.name}</span>
+                <Link to={"/dashboard/user"} className="text-gray-700 text-sm">Hello, {user.name}</Link>
                 <button
                   onClick={handleLogout}
                   className="bg-emerald-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors"
