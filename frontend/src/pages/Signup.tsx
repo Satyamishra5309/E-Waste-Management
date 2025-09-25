@@ -12,19 +12,26 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [proofImage, setProofImage] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    address: '',
     password: '',
     confirmPassword: '',
     companyName: '',
     companyId: '',
+    headquarterLocation: '',
     departmentName: '',
-    govId: ''
+    govId: '',
+    govLocation: ''
   });
+
   const [errors, setErrors] = useState<string[]>([]);
 
-  // Check if coming from "Become a Partner" page
+  // Preselect partner if redirected from Become a Partner
   useEffect(() => {
     if (location.state?.preselectedCategory === 'partner') {
       setSelectedCategory('partner');
@@ -46,6 +53,10 @@ export default function Signup() {
       newErrors.push('Please upload proof image for partner registration');
     }
 
+    if (selectedCategory === 'user' && !profileImage) {
+      newErrors.push('Please upload profile photo');
+    }
+
     setErrors(newErrors);
     return newErrors.length === 0;
   };
@@ -61,10 +72,11 @@ export default function Signup() {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'proof' | 'profile') => {
     const file = e.target.files?.[0];
     if (file) {
-      setProofImage(file);
+      if (type === 'proof') setProofImage(file);
+      else setProfileImage(file);
     }
   };
 
@@ -78,35 +90,21 @@ export default function Signup() {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden">
         <div className="md:flex">
-          {/* Left Side - CycleBit Info */}
+          {/* Left Info Section */}
           <div className="md:w-1/2 bg-gradient-to-br from-emerald-600 to-green-700 p-12 text-white">
             <div className="flex items-center mb-8">
               <Recycle className="h-12 w-12 mr-4 animate-pulse" />
               <Link to="/" className="text-white-600 hover:text-emerald-100 font-medium">
-                   <h1 className="text-4xl font-bold">CycleBit</h1>
-                </Link>
+                <h1 className="text-4xl font-bold">CycleBit</h1>
+              </Link>
             </div>
             <h2 className="text-3xl font-bold mb-6">Join the Revolution!</h2>
             <p className="text-xl mb-8 text-emerald-100">
               Be part of the solution to the global e-waste crisis.
             </p>
-            <div className="space-y-4 text-emerald-100">
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
-                <span>Turn old devices into cash</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
-                <span>Support environmental sustainability</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-300 rounded-full mr-3"></div>
-                <span>Join a trusted community</span>
-              </div>
-            </div>
           </div>
 
-          {/* Right Side - Signup Form */}
+          {/* Right Form Section */}
           <div className="md:w-1/2 p-12 max-h-screen overflow-y-auto">
             <h2 className="text-3xl font-bold text-gray-800 mb-8">Create Account</h2>
 
@@ -148,8 +146,30 @@ export default function Signup() {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="+91 9876543210"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.address}
+                      onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="123 Green Street, Lucknow"
                     />
                   </div>
                   <div>
@@ -159,9 +179,19 @@ export default function Signup() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="john@example.com"
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Profile Photo</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, 'profile')}
+                      className="block w-full text-gray-600"
+                    />
+                    {profileImage && <p className="text-sm text-gray-500 mt-2">Selected: {profileImage.name}</p>}
                   </div>
                 </>
               )}
@@ -176,8 +206,19 @@ export default function Signup() {
                       required
                       value={formData.companyName}
                       onChange={(e) => setFormData({...formData, companyName: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="EcoTech Solutions"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Headquarter Location</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.headquarterLocation}
+                      onChange={(e) => setFormData({...formData, headquarterLocation: e.target.value})}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="Bengaluru, India"
                     />
                   </div>
                   <div>
@@ -187,7 +228,7 @@ export default function Signup() {
                       required
                       value={formData.companyId}
                       onChange={(e) => setFormData({...formData, companyId: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="ECO001"
                     />
                   </div>
@@ -198,27 +239,19 @@ export default function Signup() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="contact@ecotech.com"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Upload Proof Image</label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-emerald-400 transition-colors">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                        id="proof-upload"
-                      />
-                      <label htmlFor="proof-upload" className="cursor-pointer">
-                        <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-600">
-                          {proofImage ? proofImage.name : 'Click to upload company registration document'}
-                        </p>
-                      </label>
-                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, 'proof')}
+                      className="block w-full text-gray-600"
+                    />
+                    {proofImage && <p className="text-sm text-gray-500 mt-2">Selected: {proofImage.name}</p>}
                   </div>
                 </>
               )}
@@ -233,7 +266,7 @@ export default function Signup() {
                       required
                       value={formData.departmentName}
                       onChange={(e) => setFormData({...formData, departmentName: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="Environmental Protection Agency"
                     />
                   </div>
@@ -244,8 +277,19 @@ export default function Signup() {
                       required
                       value={formData.govId}
                       onChange={(e) => setFormData({...formData, govId: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="GOV001"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.govLocation}
+                      onChange={(e) => setFormData({...formData, govLocation: e.target.value})}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="New Delhi, India"
                     />
                   </div>
                   <div>
@@ -255,7 +299,7 @@ export default function Signup() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full px-4 py-3 border rounded-lg"
                       placeholder="dept@government.org"
                     />
                   </div>
@@ -271,7 +315,7 @@ export default function Signup() {
                     required
                     value={formData.password}
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
+                    className="w-full px-4 py-3 border rounded-lg pr-12"
                     placeholder="Enter secure password"
                   />
                   <button
@@ -292,7 +336,7 @@ export default function Signup() {
                     required
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 pr-12"
+                    className="w-full px-4 py-3 border rounded-lg pr-12"
                     placeholder="Confirm your password"
                   />
                   <button
